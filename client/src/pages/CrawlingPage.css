@@ -6,7 +6,7 @@
 
   font-size: large;
 }
-
+/*  */
 .CrawlingPage .button_section {
   width: 120px;
   padding: 10px;
@@ -14,5 +14,31 @@
   border-radius: 5px;
 
   margin-left: 25px;
+  font-size: large;
+}
+/*  */
+.CrawlingPage .checkbox_section {
+  display: flex;
+  gap: 30px;
+  font-size: 20px;
+  font-weight: bold;
+}
+.CrawlingPage .checkbox_section > label > input {
+  width: 20px;
+  height: 20px;
+}
+/*  */
+.CrawlingPage .filtering_section {
+  margin: 20px 0px;
+
+  display: flex;
+  gap: 20px;
+}
+.CrawlingPage .filtering_section > input {
+  width: 200px;
+  padding: 10px;
+  border: 1px solid rgb(220, 220, 200);
+  border-radius: 5px;
+
   font-size: large;
 }
