@@ -1,0 +1,18 @@
+.CrawlingPage .input_section {
+  width: 200px;
+  padding: 10px;
+  border: 1px solid rgb(220, 220, 200);
+  border-radius: 5px;
+
+  font-size: large;
+}
+
+.CrawlingPage .button_section {
+  width: 120px;
+  padding: 10px;
+  border: 1px solid rgb(220, 220, 200);
+  border-radius: 5px;
+
+  margin-left: 25px;
+  font-size: large;
+}
