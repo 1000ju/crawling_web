@@ -11,7 +11,8 @@ const output = ({ id, href, title, pageText }) => {
       >
         {`${id + 1}.  ${title}`}
       </a>
-      <div className="output_text">{pageText}</div>
+      <div className="output_text">{pageText ? pageText : ""}</div>
+      {/* google news의 경우에는 본문 내용이 없음. 있을 경우에만 출력 */}
     </div>
   );
 };

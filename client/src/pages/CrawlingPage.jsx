@@ -9,7 +9,7 @@ const Crawling_page = () => {
     search2: "",
     search3: "",
   }); // 검색어를 관리하기 위한 useState 훅
-  const [data, setData] = useState([{}]); // 크롤링 결과 상태를 관리하기 위한 useState 훅
+  const [data, setData] = useState([]); // 크롤링 결과 상태를 관리하기 위한 useState 훅
   const [loading, setLoading] = useState(false);
   const [selectBox, setSelectBox] = useState({
     box1: true,
@@ -31,22 +31,98 @@ const Crawling_page = () => {
     });
   };
 
+  //
+  const createUrlNBox = (selectBox, boxKey, encodedSearch) => {
+    let url = "";
+    let boxNumber = 0;
+
+    if (boxKey === "box1" && selectBox.box1 === true) {
+      url = `https://search.naver.com/search.naver?ssc=tab.news.all&where=news&sm=tab_jum&query=${encodedSearch}`; //naver 뉴스
+      boxNumber = 1;
+    } else if (boxKey === "box2" && selectBox.box2 === true) {
+      url = `https://search.naver.com/search.naver?ssc=tab.blog.all&sm=tab_jum&query=${encodedSearch}`; //naver blog
+      boxNumber = 2;
+    } else if (boxKey === "box3" && selectBox.box3 === true) {
+      url = `https://news.google.com/search?sca_esv=c137534a6bb4ed6f&sxsrf=ADLYWII_Y-rZFqebKYMz7mbqecYFgzJP0g:1737350036068&q=${encodedSearch}&fbs=AEQNm0DmKhoYsBCHazhZSCWuALW8zG5KKXpo1pyYBW121r8ao-kBOnxMvGPVEXCCF3I4-Z-FmZ_yoRDoU-jmPBe7c_ooMSh5XYNhi1mODLDxBzi7I6xcVcE2WMmDPHgEHee2JYh5rkoUxcRz8Qem7jKENSm7lLS4CeTYHyFfSGgU_8DvnQfA1r-MglHpMTH-MDR0jkK__B3QcwO2baciWQWq6gKxy4octw&biw=1745&bih=859&dpr=1.1&hl=ko&gl=KR&ceid=KR:ko
+`; //google 뉴스
+      boxNumber = 3;
+    }
+
+    return { url, boxNumber };
+  };
+
   const fetchData = async () => {
     setLoading(true);
     try {
       //search기반으로 url을 만듦
       const encodedSearch = encodeURIComponent(search.search1); // 검색어를 URL 인코딩
-      const url = `https://search.naver.com/search.naver?ssc=tab.news.all&where=news&sm=tab_jum&query=${encodedSearch}`; //naver 뉴스
 
-      console.log("post요청");
-      const response = await axios.post("http://localhost:5000/crawl", {
-        url,
-        selectBox,
-      }); // 서버에 POST 요청
-      setData(response.data.results); // response.data는 서버에서 반환된 데이터에 접근하는 방법
-      // (응답으로 results로 보냈으니 정확하게 results까지 덧붙여줘야함. props이름 끼리는 맞춰줘야 값을 받아올 수 있음음)
-      console.log(response.data.results);
-      console.log("Done");
+      // console.log("post요청");
+      // const response = await axios.post("http://localhost:5000/crawl", {
+      //   url,
+      //   boxNumber,
+      // }); // 서버에 POST 요청
+      // setData([...data, ...response.data.results]); // response.data는 서버에서 반환된 데이터에 접근하는 방법
+      // // (응답으로 results로 보냈으니 정확하게 results까지 덧붙여줘야함. props이름 끼리는 맞춰줘야 값을 받아올 수 있음음)
+
+      // 모든 키 가져오기
+      const keys = Object.keys(selectBox);
+      setData(() => []); // 빈 배열로 초기화
+
+      if (selectBox.box1) {
+        // box1의 키 가져오기
+        const boxKey = keys.find((key) => key === "box1");
+
+        const { url, boxNumber } = createUrlNBox(
+          selectBox,
+          boxKey,
+          encodedSearch
+        );
+        console.log("post요청");
+        const response = await axios.post("http://localhost:5000/crawl", {
+          url,
+          boxNumber,
+        }); // 서버에 POST 요청
+        setData((prevData) => [...prevData, ...response.data.results]); // 이전 상태와 새 데이터 결합
+        console.log("Naver News");
+        // (응답으로 results로 보냈으니 정확하게 results까지 덧붙여줘야함. props이름 끼리는 맞춰줘야 값을 받아올 수 있음음)
+      }
+      if (selectBox.box2) {
+        // box1의 키 가져오기
+        const boxKey = keys.find((key) => key === "box2");
+
+        const { url, boxNumber } = createUrlNBox(
+          selectBox,
+          boxKey,
+          encodedSearch
+        );
+        console.log("post요청");
+        const response = await axios.post("http://localhost:5000/crawl", {
+          url,
+          boxNumber,
+        }); // 서버에 POST 요청
+        setData((prevData) => [...prevData, ...response.data.results]);
+        console.log("Naver Blog");
+      }
+
+      if (selectBox.box3) {
+        // box1의 키 가져오기
+        const boxKey = keys.find((key) => key === "box3");
+
+        const { url, boxNumber } = createUrlNBox(
+          selectBox,
+          boxKey,
+          encodedSearch
+        );
+        console.log("post요청");
+        const response = await axios.post("http://localhost:5000/crawl", {
+          url,
+          boxNumber,
+        }); // 서버에 POST 요청
+        setData((prevData) => [...prevData, ...response.data.results]);
+        console.log("Google News");
+        // fall through
+      }
     } catch (error) {
       console.error(error); // 오류가 발생하면 콘솔에 출력
     } finally {
