@@ -8,6 +8,7 @@ const Crawling_page = () => {
     search1: "조선해양",
     search2: "",
     search3: "",
+    selectedNumber: "0",
   }); // 검색어를 관리하기 위한 useState 훅
   const [data, setData] = useState([]); // 크롤링 결과 상태를 관리하기 위한 useState 훅
   const [loading, setLoading] = useState(false);
@@ -54,20 +55,14 @@ const Crawling_page = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      //search기반으로 url을 만듦
-      const encodedSearch = encodeURIComponent(search.search1); // 검색어를 URL 인코딩
-
-      // console.log("post요청");
-      // const response = await axios.post("http://localhost:5000/crawl", {
-      //   url,
-      //   boxNumber,
-      // }); // 서버에 POST 요청
-      // setData([...data, ...response.data.results]); // response.data는 서버에서 반환된 데이터에 접근하는 방법
-      // // (응답으로 results로 보냈으니 정확하게 results까지 덧붙여줘야함. props이름 끼리는 맞춰줘야 값을 받아올 수 있음음)
+      // 검색어를 URL 인코딩
+      const encodedSearch = encodeURIComponent(search.search1);
 
       // 모든 키 가져오기
       const keys = Object.keys(selectBox);
       setData(() => []); // 빈 배열로 초기화
+      const Osearch = search.search2;
+      const Xsearch = search.search3;
 
       if (selectBox.box1) {
         // box1의 키 가져오기
@@ -79,9 +74,13 @@ const Crawling_page = () => {
           encodedSearch
         );
         console.log("post요청");
+        const selectedNumber = search.selectedNumber;
         const response = await axios.post("http://localhost:5000/crawl", {
           url,
           boxNumber,
+          selectedNumber,
+          Osearch,
+          Xsearch,
         }); // 서버에 POST 요청
         setData((prevData) => [...prevData, ...response.data.results]); // 이전 상태와 새 데이터 결합
         console.log("Naver News");
@@ -96,10 +95,13 @@ const Crawling_page = () => {
           boxKey,
           encodedSearch
         );
-        console.log("post요청");
+        const selectedNumber = search.selectedNumber;
         const response = await axios.post("http://localhost:5000/crawl", {
           url,
           boxNumber,
+          selectedNumber,
+          Osearch,
+          Xsearch,
         }); // 서버에 POST 요청
         setData((prevData) => [...prevData, ...response.data.results]);
         console.log("Naver Blog");
@@ -114,10 +116,13 @@ const Crawling_page = () => {
           boxKey,
           encodedSearch
         );
-        console.log("post요청");
+        const selectedNumber = search.selectedNumber;
         const response = await axios.post("http://localhost:5000/crawl", {
           url,
           boxNumber,
+          selectedNumber,
+          Osearch,
+          Xsearch,
         }); // 서버에 POST 요청
         setData((prevData) => [...prevData, ...response.data.results]);
         console.log("Google News");
@@ -154,15 +159,38 @@ const Crawling_page = () => {
           value={search.search2}
           name="search2"
           onChange={searchChange}
-          placeholder="유사검색어"
+          onKeyDown={handleKeyPress}
+          placeholder="정밀검색어"
         />
         <input
           type="text"
           value={search.search3}
           name="search3"
           onChange={searchChange}
+          onKeyDown={handleKeyPress}
           placeholder="제외검색어"
         />
+
+        <select
+          className="scroll"
+          name="selectedNumber"
+          value={search.selectedNumber}
+          onChange={searchChange}
+        >
+          {/* 숫자 옵션을 생성합니다. */}
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+        <div>스크롤 횟수</div>
       </div>
 
       <div className="checkbox_section">

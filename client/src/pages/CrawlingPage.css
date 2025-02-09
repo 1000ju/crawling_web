@@ -42,3 +42,12 @@
 
   font-size: large;
 }
+.CrawlingPage .filtering_section .scroll {
+  width: 80px;
+  padding: 10px;
+  border: 1px solid rgb(220, 220, 200);
+  border-radius: 5px;
+  background-color: rgb(236, 236, 236);
+
+  font-size: large;
+}
