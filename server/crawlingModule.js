@@ -9,16 +9,25 @@ const crawlData = (content, boxNumber, OsearchList, XsearchList) => {
 
   switch (boxNumber) {
     case 1: {
-      // 네이버 뉴스 검색
-      $("a.news_tit").each((index, element) => {
-        const title = $(element).attr("title"); // title 속성 추출
-        const href = $(element).attr("href"); // .href
+      // 네이버 뉴스 검색 (2025년 기준 최신 구조)
+      $("div.sds-comps-base-layout").each((index, element) => {
+        // 제목 추출 (헤드라인 텍스트)
+        const titleElement = $(element).find(
+          "span.sds-comps-text-type-headline1"
+        );
+        const title = titleElement.text().trim();
 
-        // dscText 추출
-        const dscTextElement = $("a.api_txt_lines.dsc_txt_wrap").eq(index); // 같은 인덱스의 dscText 요소 가져오기
-        const dscText = dscTextElement.text(); // dscText 추출
+        // 링크 추출 (제목 링크)
+        const hrefElement = $(element).find("a").first();
+        const href = hrefElement.attr("href");
 
-        // 조건 체크: title과 dscText 모두 유효한 경우에만 결과에 추가
+        // 본문 요약 텍스트 추출
+        const dscTextElement = $(element).find(
+          "span.sds-comps-text-type-body1"
+        );
+        const dscText = dscTextElement.text().trim();
+
+        // 조건 검사 후 결과 저장
         if (
           title &&
           href &&
@@ -26,7 +35,7 @@ const crawlData = (content, boxNumber, OsearchList, XsearchList) => {
           isValidResult(title, OsearchList, XsearchList) &&
           isValidResult(dscText, OsearchList, XsearchList)
         ) {
-          results.push({ title, href, dscText }); // 배열에 추가
+          results.push({ title, href, dscText });
         }
       });
       break;

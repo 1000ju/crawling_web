@@ -73,7 +73,7 @@ app.post("/crawl", async (req, res) => {
   }
 });
 
-const PORT = 5000;
+const PORT = 5050;
 app.listen(PORT, () => {
   console.log(`서버가 http://localhost:${PORT}에서 실행 중입니다.`); // 서버 실행 메시지
 });

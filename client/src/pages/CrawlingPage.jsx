@@ -75,7 +75,7 @@ const Crawling_page = () => {
         );
         console.log("post요청");
         const selectedNumber = search.selectedNumber;
-        const response = await axios.post("http://localhost:5000/crawl", {
+        const response = await axios.post("http://localhost:5050/crawl", {
           url,
           boxNumber,
           selectedNumber,
@@ -96,7 +96,7 @@ const Crawling_page = () => {
           encodedSearch
         );
         const selectedNumber = search.selectedNumber;
-        const response = await axios.post("http://localhost:5000/crawl", {
+        const response = await axios.post("http://localhost:5050/crawl", {
           url,
           boxNumber,
           selectedNumber,
@@ -117,7 +117,7 @@ const Crawling_page = () => {
           encodedSearch
         );
         const selectedNumber = search.selectedNumber;
-        const response = await axios.post("http://localhost:5000/crawl", {
+        const response = await axios.post("http://localhost:5050/crawl", {
           url,
           boxNumber,
           selectedNumber,
